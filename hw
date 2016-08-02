@@ -41,11 +41,14 @@ HBWriter.new do |hb_writer|
       if OPTS[:d]
         entry_text = hb_writer.delete_entry(f.read)
       elsif OPTS[:u]
-        hb_writer.update_entry(f.read, CATEGORIES)
+        entry = hb_writer.update_entry(f.read, CATEGORIES)
+        puts entry.uri
       elsif OPTS[:m]
-        hb_writer.minor_update_entry(f.read, CATEGORIES)
+        entry = hb_writer.minor_update_entry(f.read, CATEGORIES)
+        puts entry.uri
       else
-        entry_text = hb_writer.post_entry(f.read, CATEGORIES)
+        entry_text, entry = hb_writer.post_entry(f.read, CATEGORIES)
+        puts entry.uri
       end
     end
 

@@ -13,7 +13,7 @@ class HBWriter
   def post_entry(entry_text, categories)
     title, id, content = parse_entry(entry_text)
     posted_entry = @blog.post_entry(title, content, categories)
-    insert_id(entry_text, posted_entry.id)
+    return insert_id(entry_text, posted_entry.id), posted_entry
   end
 
   def update_entry(entry_text, categories)
