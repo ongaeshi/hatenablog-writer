@@ -34,6 +34,11 @@ OptionParser.new do |opt|
   warn_and_exit(opt.help) if num_on_opts > 1 || ARGV.size == 0
 end
 
+def update(hb_writer, txt)
+  entry = hb_writer.update_entry(txt, CATEGORIES)
+  puts entry.uri
+end
+
 HBWriter.new do |hb_writer|
   ARGV.each do |file_name|
     entry_text = ''
@@ -41,8 +46,7 @@ HBWriter.new do |hb_writer|
       if OPTS[:d]
         entry_text = hb_writer.delete_entry(f.read)
       elsif OPTS[:u]
-        entry = hb_writer.update_entry(f.read, CATEGORIES)
-        puts entry.uri
+        update(hb_writer, f.read)
       elsif OPTS[:m]
         entry = hb_writer.minor_update_entry(f.read, CATEGORIES)
         puts entry.uri
@@ -50,12 +54,12 @@ HBWriter.new do |hb_writer|
         txt = f.read
 
         if hb_writer.has_id?(txt)
-          entry = hb_writer.update_entry(txt, CATEGORIES)
+          update(hb_writer, txt)
         else
           entry_text, entry = hb_writer.post_entry(txt, CATEGORIES)
+          puts "#{entry.uri} (New)"
         end
 
-        puts entry.uri
       end
     end
 
