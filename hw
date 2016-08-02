@@ -47,7 +47,14 @@ HBWriter.new do |hb_writer|
         entry = hb_writer.minor_update_entry(f.read, CATEGORIES)
         puts entry.uri
       else
-        entry_text, entry = hb_writer.post_entry(f.read, CATEGORIES)
+        txt = f.read
+
+        if hb_writer.has_id?(txt)
+          entry = hb_writer.update_entry(txt, CATEGORIES)
+        else
+          entry_text, entry = hb_writer.post_entry(txt, CATEGORIES)
+        end
+
         puts entry.uri
       end
     end

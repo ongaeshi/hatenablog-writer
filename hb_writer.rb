@@ -88,6 +88,11 @@ class HBWriter
     lines[1] = ''
     lines.join("\n")
   end
+
+  def has_id?(entry_text)
+    lines = entry_text.to_s.split("\n")
+    (lines[1] =~ /<!-- \w+ -->/) != nil
+  end
 end
 
 class HBWriterError < StandardError; end
